@@ -1,5 +1,5 @@
 {
-    "name": "bearlab/azure-storage",
+    "name": "bearlab/microsoft-azure-storage",
     "description": "Fork project provides a set of PHP client libraries that make it easy to access Microsoft Azure storage APIs.",
     "keywords": [ "php", "azure", "storage", "sdk" ],
     "license": "MIT",
