@@ -301,15 +301,23 @@ class SharedKeyAuthScheme implements IAuthScheme
     public function signRequest(Request $request)
     {
         $requestHeaders = HttpFormatter::formatHeaders($request->getHeaders());
-
+        //https://github.com/guzzle/psr7/blob/2.6/src/Query.php
+        //$signedKey = $this->getAuthorizationHeader(
+        //    $requestHeaders,
+        //    $request->getUri(),
+        //    \GuzzleHttp\Psr7\parse_query(
+        //        $request->getUri()->getQuery()
+        //    ),
+        //    $request->getMethod()
+        //);
         $signedKey = $this->getAuthorizationHeader(
             $requestHeaders,
             $request->getUri(),
-            \GuzzleHttp\Psr7\parse_query(
+            \GuzzleHttp\Psr7\Query::parse(
                 $request->getUri()->getQuery()
-            ),
+                ),
             $request->getMethod()
-        );
+            );
 
         return $request->withHeader(Resources::AUTHENTICATION, $signedKey);
     }

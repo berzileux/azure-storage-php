@@ -239,7 +239,7 @@ class ServiceRestProxy extends RestProxy
                 throw $reason;
             }
         ]);
-        
+
         return $eachPromise->promise();
     }
 
@@ -271,7 +271,7 @@ class ServiceRestProxy extends RestProxy
         } else {
             $uri = $this->psrPrimaryUri;
         }
-        
+
         //Append the path, not replacing it.
         if ($path != null) {
             $exPath = $uri->getPath();
@@ -288,7 +288,9 @@ class ServiceRestProxy extends RestProxy
 
         // add query parameters into headers
         if ($queryParams != null) {
-            $queryString = Psr7\build_query($queryParams);
+            //https://github.com/guzzle/psr7/blob/2.6/src/Query.php
+            //$queryString = Psr7\build_query($queryParams);
+            $queryString = Psr7\Query::build($queryParams);
             $uri = $uri->withQuery($queryString);
         }
 
@@ -297,8 +299,9 @@ class ServiceRestProxy extends RestProxy
         if (empty($body)) {
             if (empty($headers['content-type'])) {
                 $headers['content-type'] = 'application/x-www-form-urlencoded';
-                $actualBody = Psr7\build_query($postParameters);
-            }
+                //https://github.com/guzzle/psr7/blob/2.6/src/Query.php
+                //$actualBody = Psr7\build_query($postParameters);
+                $actualBody = Psr7\Query::build($postParameters);}
         } else {
             $actualBody = $body;
         }
@@ -486,7 +489,7 @@ class ServiceRestProxy extends RestProxy
             throw new ServiceException($response);
         }
     }
-    
+
     /**
      * Adds HTTP POST parameter to the specified
      *
